@@ -12,35 +12,49 @@ class MovieDetailsScreen extends StatefulWidget {
 }
 
 class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
-  
-  late bool isFavorite;
+  bool isFavorite = false;
 
   @override
   void initState() {
     super.initState();
-    isFavorite = FavoriteService.isFavorite(widget.movie.id);
+    _checkFavorite();
+  }
+
+  Future<void> _checkFavorite() async {
+    final value = await FavoriteService.isFavorite(widget.movie.id);
+
+    if (!mounted) return;
+
+    setState(() {
+      isFavorite = value;
+    });
+  }
+
+  Future<void> _toggleFavorite() async {
+    await FavoriteService.toggleFavorite(widget.movie);
+
+    if (!mounted) return;
+
+    setState(() {
+      isFavorite = !isFavorite;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final movie = widget.movie;
+    final textColor = Theme.of(context).textTheme.bodyMedium?.color;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF111111),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
             expandedHeight: 420,
             pinned: true,
-            backgroundColor: const Color(0xFF111111),
-            iconTheme: const IconThemeData(color: Colors.white),
             actions: [
               IconButton(
-                onPressed: () {
-                setState(() {
-                  FavoriteService.toggleFavorite(widget.movie.id);
-                  isFavorite = FavoriteService.isFavorite(widget.movie.id);
-                });                },
+                onPressed: _toggleFavorite,
                 icon: Icon(
                   isFavorite ? Icons.favorite : Icons.favorite_border,
                   color: isFavorite ? const Color(0xFFFF3300) : Colors.white,
@@ -55,15 +69,15 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                       ? Image.network(
                           movie.fullPosterUrl,
                           fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => _posterPlaceholder(),
+                          errorBuilder: (_, __, ___) => _posterPlaceholder(context),
                         )
-                      : _posterPlaceholder(),
+                      : _posterPlaceholder(context),
                   Container(
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
                           Colors.transparent,
-                          Color(0xFF111111),
+                          Theme.of(context).scaffoldBackgroundColor,
                         ],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
@@ -82,8 +96,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 children: [
                   Text(
                     movie.title,
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: textColor,
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
                     ),
@@ -91,13 +105,12 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                   const SizedBox(height: 14),
                   Row(
                     children: [
-                      _infoChip(Icons.star, movie.rating.toStringAsFixed(1)),
+                      _infoChip(context, Icons.star, movie.rating.toStringAsFixed(1)),
                       const SizedBox(width: 10),
                       _infoChip(
+                        context,
                         Icons.calendar_month,
-                        movie.releaseDate.isEmpty
-                            ? 'Unknown'
-                            : movie.releaseDate,
+                        movie.releaseDate.isEmpty ? 'Unknown' : movie.releaseDate,
                       ),
                     ],
                   ),
@@ -115,8 +128,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                     movie.overview.isEmpty
                         ? 'No overview available for this movie.'
                         : movie.overview,
-                    style: const TextStyle(
-                      color: Colors.white70,
+                    style: TextStyle(
+                      color: textColor?.withValues(alpha: 0.75),
                       fontSize: 15,
                       height: 1.6,
                     ),
@@ -130,27 +143,29 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
     );
   }
 
-  Widget _infoChip(IconData icon, String text) {
+  Widget _infoChip(BuildContext context, IconData icon, String text) {
+    final textColor = Theme.of(context).textTheme.bodyMedium?.color;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1A1A),
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white12),
+        border: Border.all(color: Theme.of(context).dividerColor),
       ),
       child: Row(
         children: [
           Icon(icon, color: const Color(0xFFFF3300), size: 18),
           const SizedBox(width: 6),
-          Text(text, style: const TextStyle(color: Colors.white)),
+          Text(text, style: TextStyle(color: textColor)),
         ],
       ),
     );
   }
 
-  Widget _posterPlaceholder() {
+  Widget _posterPlaceholder(BuildContext context) {
     return Container(
-      color: const Color(0xFF1A1A1A),
+      color: Theme.of(context).cardColor,
       child: const Center(
         child: Icon(Icons.movie, color: Color(0xFF00CCFF), size: 80),
       ),
