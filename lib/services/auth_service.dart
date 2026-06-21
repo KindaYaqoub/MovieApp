@@ -15,12 +15,15 @@ class AuthService {
       password: password,
     );
 
+
     await _firestore.collection('users').doc(credential.user!.uid).set({
       'fullName': fullName,
       'email': email,
       'createdAt': FieldValue.serverTimestamp(),
       'role': 'user',
     });
+ 
+
 
     return credential;
   }
@@ -41,9 +44,9 @@ Future<void> sendPasswordResetEmail(String email) async {
   );
 }
 
-  Future<void> signOut() async {
-    await _auth.signOut();
-  }
+Future<void> signOut() async {
+  await _auth.signOut();
+}
 
-  User? get currentUser => _auth.currentUser;
+User? get currentUser => _auth.currentUser;
 }

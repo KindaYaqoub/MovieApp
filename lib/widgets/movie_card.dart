@@ -1,18 +1,30 @@
-
 import 'package:flutter/material.dart';
-import '../models/movie_model.dart';
 
+import '../models/movie_model.dart';
+import '../screens/movie_details_screen.dart';
 
 class MovieCard extends StatelessWidget {
   final MovieModel movie;
   final VoidCallback? onTap;
 
-  const MovieCard({super.key, required this.movie, this.onTap});
+  const MovieCard({
+    super.key,
+    required this.movie,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: onTap ??
+          () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => MovieDetailsScreen(movie: movie),
+              ),
+            );
+          },
       child: Container(
         decoration: BoxDecoration(
           color: const Color(0xFF1A1A1A),
@@ -37,7 +49,10 @@ class MovieCard extends StatelessWidget {
                     top: 8,
                     right: 8,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 3,
+                      ),
                       decoration: BoxDecoration(
                         color: const Color(0xFF00CCFF),
                         borderRadius: BorderRadius.circular(6),
@@ -45,7 +60,11 @@ class MovieCard extends StatelessWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Icon(Icons.star, size: 11, color: Color(0xFF003344)),
+                          const Icon(
+                            Icons.star,
+                            size: 11,
+                            color: Color(0xFF003344),
+                          ),
                           const SizedBox(width: 2),
                           Text(
                             movie.voteAverage.toStringAsFixed(1),
@@ -98,7 +117,11 @@ class MovieCard extends StatelessWidget {
     return Container(
       color: const Color(0xFF2A2A2A),
       child: const Center(
-        child: Icon(Icons.movie_outlined, color: Color(0xFF444444), size: 40),
+        child: Icon(
+          Icons.movie_outlined,
+          color: Color(0xFF444444),
+          size: 40,
+        ),
       ),
     );
   }
