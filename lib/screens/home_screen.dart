@@ -5,6 +5,10 @@ import '../services/movie_service.dart';
 import '../widgets/movie_card.dart';
 import 'search_screen.dart';
 
+import '../services/auth_service.dart';
+import 'login_screen.dart';
+
+
 
 const kPrimary    = Color(0xFF00CCFF);
 const kSecondary  = Color(0xFFFF3300);
@@ -215,6 +219,33 @@ TextField(
 ),
               ),
             ),
+
+const SizedBox(width: 8),
+
+IconButton(
+  icon: const Icon(
+    Icons.logout,
+    color: Colors.red,
+  ),
+
+
+  onPressed: () async {
+  await AuthService().signOut();
+
+  if (!context.mounted) return;
+
+  Navigator.pushAndRemoveUntil(
+    context,
+    MaterialPageRoute(
+      builder: (context) => const LoginScreen(),
+    ),
+    (route) => false,
+  );
+},
+),
+
+
+
           ],
         ),
       ),
