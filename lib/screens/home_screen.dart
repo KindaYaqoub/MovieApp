@@ -5,13 +5,10 @@ import '../services/movie_service.dart';
 import '../widgets/movie_card.dart';
 import 'search_screen.dart';
 
-<<<<<<< HEAD
 import '../services/auth_service.dart';
 import 'login_screen.dart';
 
 
-=======
->>>>>>> b5c79720427284cf4678a44bc0802439674795b9
 
 const kPrimary    = Color(0xFF00CCFF);
 const kSecondary  = Color(0xFFFF3300);
@@ -247,7 +244,6 @@ IconButton(
 ),
 
 
- b5c79720427284cf4678a44bc0802439674795b9
           ],
         ),
       ),
