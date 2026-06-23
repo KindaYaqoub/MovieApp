@@ -6,6 +6,7 @@ import '../models/movie_model.dart';
 class FavoriteService {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   static final FirebaseAuth _auth = FirebaseAuth.instance;
+  static final List<MovieModel> favoriteMovies = [];
 
   static String? get _userId => _auth.currentUser?.uid;
 
