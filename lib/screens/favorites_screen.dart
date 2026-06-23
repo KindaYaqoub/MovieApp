@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/movie_model.dart';
 import '../services/favorite_service.dart';
 import 'movie_details_screen.dart';
+import 'favorite_statistics_screen.dart';
 
 class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({super.key});
@@ -48,6 +49,20 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           'Favorite Movies',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.bar_chart),
+            tooltip: 'Favorite Statistics',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const FavoriteStatisticsScreen(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: isLoading
           ? const Center(
