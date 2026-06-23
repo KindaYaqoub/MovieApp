@@ -4,8 +4,6 @@ import '../models/movie_model.dart';
 import '../services/movie_service.dart';
 import '../widgets/movie_card.dart';
 import 'search_screen.dart';
-import '../services/auth_service.dart';
-import 'login_screen.dart';
 import 'favorites_screen.dart';
 import 'settings_screen.dart';
 
@@ -182,14 +180,14 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+              padding: const EdgeInsets.fromLTRB(14, 20, 14, 0),
               child: Row(
                 children: [
                   Hero(
                     tag: 'movie_icon_hero',
                     child: Container(
-                      width: 44,
-                      height: 44,
+                      width: 38,
+                      height: 38,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: cardColor,
@@ -208,12 +206,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: const Icon(
                         Icons.movie_filter_rounded,
                         color: Color(0xFF00CCFF),
-                        size: 22,
+                        size: 20,
                       ),
                     ),
                   ),
 
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 8),
 
                   ShaderMask(
                     shaderCallback: (bounds) => const LinearGradient(
@@ -223,21 +221,21 @@ class _HomeScreenState extends State<HomeScreen> {
                       'MTV MOVI',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
+                        fontSize: 17,
                         fontWeight: FontWeight.w900,
                         letterSpacing: -0.5,
                       ),
                     ),
                   ),
 
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 8),
 
                   Expanded(
                     child: Container(
-                      height: 42,
+                      height: 44,
                       decoration: BoxDecoration(
                         color: cardColor,
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(12),
                         border: Border.all(
                           color: Theme.of(context).dividerColor,
                         ),
@@ -276,60 +274,46 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
 
-                  const SizedBox(width: 8),
+                  const SizedBox(width: 4),
 
-                  IconButton(
-                    icon: const Icon(
-                      Icons.logout,
-                      color: Colors.red,
+                  SizedBox(
+                    width: 36,
+                    child: IconButton(
+                      padding: EdgeInsets.zero,
+                      icon: const Icon(
+                        Icons.favorite,
+                        color: Color(0xFFFF3300),
+                        size: 24,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const FavoritesScreen(),
+                          ),
+                        );
+                      },
                     ),
-                    onPressed: () async {
-                      await AuthService().signOut();
-
-                      if (!context.mounted) return;
-
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginScreen(),
-                        ),
-                        (route) => false,
-                      );
-                    },
                   ),
 
-                  const SizedBox(width: 5),
-
-                  IconButton(
-                    icon: const Icon(
-                      Icons.favorite,
-                      color: Color(0xFFFF3300),
+                  SizedBox(
+                    width: 36,
+                    child: IconButton(
+                      padding: EdgeInsets.zero,
+                      icon: const Icon(
+                        Icons.settings,
+                        color: Color(0xFF00CCFF),
+                        size: 24,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SettingsScreen(),
+                          ),
+                        );
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const FavoritesScreen(),
-                        ),
-                      );
-                    },
-                  ),
-
-                  const SizedBox(width: 5),
-
-                  IconButton(
-                    icon: const Icon(
-                      Icons.settings,
-                      color: Color(0xFF00CCFF),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SettingsScreen(),
-                        ),
-                      );
-                    },
                   ),
                 ],
               ),

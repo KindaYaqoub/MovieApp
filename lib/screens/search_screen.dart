@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/movie_model.dart';
 import '../services/movie_service.dart';
+import 'movie_details_screen.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -91,7 +92,6 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                 ),
                 const SizedBox(height: 25),
-
                 TextField(
                   controller: searchController,
                   style: const TextStyle(color: Colors.white),
@@ -127,9 +127,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 25),
-
                 Expanded(
                   child: buildContent(),
                 ),
@@ -192,87 +190,98 @@ class _SearchScreenState extends State<SearchScreen> {
       itemBuilder: (context, index) {
         final movie = movies[index];
 
-        return Container(
-          margin: const EdgeInsets.only(bottom: 14),
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: const Color(0xFF15171C),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: Colors.white.withOpacity(0.06),
-            ),
-          ),
-          child: Row(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: movie.posterPath.isNotEmpty
-                    ? Image.network(
-                        'https://image.tmdb.org/t/p/w500${movie.posterPath}',
-                        width: 80,
-                        height: 110,
-                        fit: BoxFit.cover,
-                      )
-                    : Container(
-                        width: 80,
-                        height: 110,
-                        color: Colors.black26,
-                        child: const Icon(
-                          Icons.movie,
-                          color: Color(0xFF00CCFF),
-                          size: 34,
-                        ),
-                      ),
+        return InkWell(
+          borderRadius: BorderRadius.circular(16),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MovieDetailsScreen(movie: movie),
               ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      movie.title,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.star,
-                          color: Color(0xFFFF3300),
-                          size: 18,
-                        ),
-                        const SizedBox(width: 5),
-                        Text(
-                          movie.rating.toStringAsFixed(1),
-                          style: const TextStyle(
+            );
+          },
+          child: Container(
+            margin: const EdgeInsets.only(bottom: 14),
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: const Color(0xFF15171C),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.06),
+              ),
+            ),
+            child: Row(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: movie.posterPath.isNotEmpty
+                      ? Image.network(
+                          'https://image.tmdb.org/t/p/w500${movie.posterPath}',
+                          width: 80,
+                          height: 110,
+                          fit: BoxFit.cover,
+                        )
+                      : Container(
+                          width: 80,
+                          height: 110,
+                          color: Colors.black26,
+                          child: const Icon(
+                            Icons.movie,
                             color: Color(0xFF00CCFF),
+                            size: 34,
                           ),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      movie.overview.isEmpty
-                          ? 'No overview available'
-                          : movie.overview,
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Colors.white60,
-                        fontSize: 13,
-                        height: 1.4,
-                      ),
-                    ),
-                  ],
                 ),
-              ),
-            ],
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        movie.title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.star,
+                            color: Color(0xFFFF3300),
+                            size: 18,
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            movie.rating.toStringAsFixed(1),
+                            style: const TextStyle(
+                              color: Color(0xFF00CCFF),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        movie.overview.isEmpty
+                            ? 'No overview available'
+                            : movie.overview,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: Colors.white60,
+                          fontSize: 13,
+                          height: 1.4,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },

@@ -1,33 +1,47 @@
 import 'package:flutter/material.dart';
 
+import 'home_screen.dart';
+import 'search_screen.dart';
+import 'favorites_screen.dart';
+
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
 
-  Widget _buildFeatureCard(BuildContext context, IconData icon, String text) {
+  Widget _buildFeatureCard(
+    BuildContext context,
+    IconData icon,
+    String text,
+    VoidCallback onTap,
+  ) {
     final textColor = Theme.of(context).textTheme.bodyMedium?.color;
 
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Theme.of(context).dividerColor),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, color: const Color(0xFF00CCFF), size: 22),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              text,
-              style: TextStyle(
-                color: textColor,
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Theme.of(context).dividerColor),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, color: const Color(0xFF00CCFF), size: 22),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                text,
+                style: TextStyle(
+                  color: textColor,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
-          ),
-        ],
+            const Icon(Icons.arrow_forward_ios, size: 14),
+          ],
+        ),
       ),
     );
   }
@@ -69,7 +83,7 @@ class AboutScreen extends StatelessWidget {
             const SizedBox(height: 20),
 
             Text(
-              'Movie Catalog',
+              'About MTV MOVI',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: textColor,
@@ -81,7 +95,11 @@ class AboutScreen extends StatelessWidget {
             const SizedBox(height: 10),
 
             Text(
-              'Discover popular and top-rated movies, explore details, search easily, and save your favorite movies in one place.',
+
+
+              'MTV MOVI brings the world of movies to your fingertips. Explore trending and top-rated films, search for any movie instantly, view detailed information, and keep track of your favorite films.',
+
+
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: mutedColor,
@@ -106,38 +124,50 @@ class AboutScreen extends StatelessWidget {
 
             const SizedBox(height: 14),
 
-            _buildFeatureCard(context, Icons.trending_up, 'Browse popular movies'),
-            const SizedBox(height: 10),
-            _buildFeatureCard(context, Icons.star, 'View top-rated movies'),
-            const SizedBox(height: 10),
-            _buildFeatureCard(context, Icons.search, 'Search for movies'),
-            const SizedBox(height: 10),
-            _buildFeatureCard(context, Icons.favorite, 'Save favorite movies'),
-            const SizedBox(height: 10),
-            _buildFeatureCard(context, Icons.person, 'User login and account support'),
-
-            const SizedBox(height: 30),
-
-            Divider(color: Theme.of(context).dividerColor),
-
-            const SizedBox(height: 12),
-
-            Text(
-              'Version 1.0.0',
-              style: TextStyle(
-                color: textColor?.withValues(alpha: 0.6),
-                fontSize: 14,
-              ),
+            _buildFeatureCard(
+              context,
+              Icons.movie_creation_outlined,
+              'Browse popular and top-rated movies',
+              () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomeScreen(),
+                  ),
+                );
+              },
             ),
 
-            const SizedBox(height: 8),
+            const SizedBox(height: 10),
 
-            const Text(
-              'Developed by Group D',
-              style: TextStyle(
-                color: Color(0xFFFF3300),
-                fontWeight: FontWeight.bold,
-              ),
+            _buildFeatureCard(
+              context,
+              Icons.search,
+              'Search for movies',
+              () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SearchScreen(),
+                  ),
+                );
+              },
+            ),
+
+            const SizedBox(height: 10),
+
+            _buildFeatureCard(
+              context,
+              Icons.favorite,
+              'Save favorite movies',
+              () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const FavoritesScreen(),
+                  ),
+                );
+              },
             ),
           ],
         ),

@@ -4,6 +4,11 @@ import '../main.dart';
 import 'about_screen.dart';
 import 'team_members_screen.dart';
 
+import '../services/auth_service.dart';
+import 'login_screen.dart';
+
+
+
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
@@ -51,24 +56,47 @@ class SettingsScreen extends StatelessWidget {
           ),
 
           ListTile(
-            leading: const Icon(
-              Icons.group,
-              color: Color(0xFFFF3300),
-            ),
-            title: const Text('Team Members'),
-            trailing: const Icon(
-              Icons.arrow_forward_ios,
-              size: 16,
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const TeamMembersScreen(),
-                ),
-              );
-            },
-          ),
+  leading: const Icon(
+    Icons.group,
+    color: Color(0xFFFF3300),
+  ),
+  title: const Text('Team Members'),
+  trailing: const Icon(
+    Icons.arrow_forward_ios,
+    size: 16,
+  ),
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const TeamMembersScreen(),
+      ),
+    );
+  },
+),
+
+const Divider(),
+
+ListTile(
+  leading: const Icon(
+    Icons.logout,
+    color: Colors.redAccent,
+  ),
+  title: const Text('Logout'),
+  onTap: () async {
+    await AuthService().signOut();
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const LoginScreen(),
+      ),
+      (route) => false,
+    );
+  },
+),
+
+
         ],
       ),
     );
